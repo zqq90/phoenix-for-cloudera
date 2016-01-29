@@ -551,6 +551,11 @@ public class UngroupedAggregateRegionObserver extends BaseScannerRegionObserver{
             private boolean done = !hadAny;
 
             @Override
+            public int getBatch() {
+                return innerScanner.getBatch();
+            }
+
+            @Override
             public HRegionInfo getRegionInfo() {
                 return innerScanner.getRegionInfo();
             }

@@ -22,6 +22,7 @@ import java.util.List;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.HRegionInfo;
 import org.apache.hadoop.hbase.regionserver.RegionScanner;
+import org.apache.hadoop.hbase.regionserver.ScannerContext;
 
 public class DelegateRegionScanner implements RegionScanner {
 
@@ -56,11 +57,15 @@ public class DelegateRegionScanner implements RegionScanner {
         delegate.close();
     }
 
+    public int getBatch() {
+        return delegate.getBatch();
+    }
+
     public long getMaxResultSize() {
         return delegate.getMaxResultSize();
     }
 
-    public boolean next(List<Cell> arg0, int arg1) throws IOException {
+    public boolean next(List<Cell> arg0, ScannerContext arg1) throws IOException {
         return delegate.next(arg0, arg1);
     }
 
@@ -68,7 +73,7 @@ public class DelegateRegionScanner implements RegionScanner {
         return delegate.next(arg0);
     }
 
-    public boolean nextRaw(List<Cell> arg0, int arg1) throws IOException {
+    public boolean nextRaw(List<Cell> arg0, ScannerContext arg1) throws IOException {
         return delegate.nextRaw(arg0, arg1);
     }
 

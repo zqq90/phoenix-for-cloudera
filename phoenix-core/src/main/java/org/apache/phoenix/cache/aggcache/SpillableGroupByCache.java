@@ -342,6 +342,11 @@ public class SpillableGroupByCache implements GroupByCache {
         // scanner using the spillable implementation
         return new BaseRegionScanner() {
             @Override
+            public int getBatch() {
+                return s.getBatch();
+            }
+
+            @Override
             public HRegionInfo getRegionInfo() {
                 return s.getRegionInfo();
             }

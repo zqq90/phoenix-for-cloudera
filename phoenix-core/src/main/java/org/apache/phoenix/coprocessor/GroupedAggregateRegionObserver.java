@@ -318,6 +318,11 @@ public class GroupedAggregateRegionObserver extends BaseScannerRegionObserver {
                 private int index = 0;
 
                 @Override
+                public int getBatch() {
+                    return s.getBatch();
+                }
+
+                @Override
                 public HRegionInfo getRegionInfo() {
                     return s.getRegionInfo();
                 }
@@ -466,6 +471,11 @@ public class GroupedAggregateRegionObserver extends BaseScannerRegionObserver {
         return new BaseRegionScanner() {
             private long rowCount = 0;
             private ImmutableBytesWritable currentKey = null;
+
+            @Override
+            public int getBatch() {
+                return scanner.getBatch();
+            }
 
             @Override
             public HRegionInfo getRegionInfo() {

@@ -4,12 +4,12 @@
   <parent>
     <groupId>com.cloudera.cdh</groupId>
     <artifactId>cdh-root</artifactId>
-    <version>5.4.5</version>
+    <version>5.5.1</version>
     <relativePath/>
   </parent>
   <groupId>org.apache.phoenix</groupId>
   <artifactId>phoenix</artifactId>
-  <version>4.6.0-cdh5.4.5</version>
+  <version>4.6.0-cdh5.5.1</version>
   <packaging>pom</packaging>
   <name>Apache Phoenix</name>
   <description>A SQL layer over HBase</description>
@@ -129,7 +129,7 @@
     <snappy.version>0.3</snappy.version>
     <netty.version>4.0.23.Final</netty.version>
     <commons-codec.version>1.7</commons-codec.version>
-    <htrace.version>3.0.4</htrace.version>
+    <htrace.version>3.2.0-incubating</htrace.version>
     <collections.version>3.2.1</collections.version>
     <jodatime.version>2.7</jodatime.version>
     <joni.version>2.1.2</joni.version>
@@ -724,7 +724,7 @@
         <version>${commons-logging.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.htrace</groupId>
+        <groupId>org.apache.htrace</groupId>
         <artifactId>htrace-core</artifactId>
         <version>${htrace.version}</version>
       </dependency>

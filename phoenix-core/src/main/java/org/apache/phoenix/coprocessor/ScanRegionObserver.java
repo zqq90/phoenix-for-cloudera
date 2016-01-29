@@ -255,6 +255,11 @@ public class ScanRegionObserver extends BaseScannerRegionObserver {
             }
 
             @Override
+            public int getBatch() {
+                return s.getBatch();
+            }
+
+            @Override
             public HRegionInfo getRegionInfo() {
                 return s.getRegionInfo();
             }
