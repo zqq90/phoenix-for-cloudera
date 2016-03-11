@@ -38,6 +38,7 @@ import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.io.TimeRange;
 import org.apache.hadoop.hbase.regionserver.HRegion;
 import org.apache.hadoop.hbase.regionserver.RegionScanner;
+import org.apache.hadoop.hbase.regionserver.ScannerContext;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.htrace.Span;
 import org.apache.htrace.Trace;
@@ -289,9 +290,9 @@ abstract public class BaseScannerRegionObserver extends BaseRegionObserver {
             }
 
             @Override
-            public boolean next(List<Cell> result, int limit) throws IOException {
+            public boolean next(List<Cell> result, ScannerContext context) throws IOException {
                 try {
-                    return s.next(result, limit);
+                    return s.next(result, context);
                 } catch (Throwable t) {
                     ServerUtil.throwIOException(c.getEnvironment().getRegion().getRegionNameAsString(), t);
                     return false; // impossible
@@ -316,6 +317,11 @@ abstract public class BaseScannerRegionObserver extends BaseRegionObserver {
             @Override
             public boolean reseek(byte[] row) throws IOException {
                 return s.reseek(row);
+            }
+
+            @Override
+            public int getBatch() {
+                return s.getBatch();
             }
 
             @Override
@@ -355,9 +361,9 @@ abstract public class BaseScannerRegionObserver extends BaseRegionObserver {
             }
 
             @Override
-            public boolean nextRaw(List<Cell> result, int limit) throws IOException {
+            public boolean nextRaw(List<Cell> result, ScannerContext context) throws IOException {
                 try {
-                    boolean next = s.nextRaw(result, limit);
+                    boolean next = s.nextRaw(result, context);
                     Cell arrayElementCell = null;
                     if (result.size() == 0) {
                         return next;
