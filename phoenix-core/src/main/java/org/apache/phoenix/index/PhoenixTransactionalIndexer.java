@@ -83,7 +83,7 @@ import co.cask.tephra.Transaction.VisibilityLevel;
 import co.cask.tephra.Transaction.VisibilityLevel;
 import co.cask.tephra.TxConstants;
 import co.cask.tephra.TxConstants;
-import co.cask.tephra.hbase10.TransactionAwareHTable;
+import co.cask.tephra.hbase10cdh.TransactionAwareHTable;
 
 /**
  * Do all the work of managing index updates for a transactional table from a single coprocessor. Since the transaction

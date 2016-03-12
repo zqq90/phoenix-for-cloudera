@@ -239,7 +239,7 @@
     </dependency>
     <dependency>
       <groupId>co.cask.tephra</groupId>
-      <artifactId>tephra-hbase-compat-1.0</artifactId>
+      <artifactId>tephra-hbase-compat-1.0-cdh</artifactId>
     </dependency>
   
     <!-- Make sure we have all the antlr dependencies -->
