@@ -64,8 +64,7 @@ public class PhoenixSerializer {
 
     public PhoenixSerializer(Configuration config, Properties tbl) throws SerDeException {
         try (Connection conn = PhoenixConnectionUtil.getInputConnection(config, tbl)) {
-            List<ColumnInfo> columnMetadata = PhoenixUtil.getColumnInfoList(conn, tbl.getProperty
-                    (PhoenixStorageHandlerConstants.PHOENIX_TABLE_NAME));
+            List<ColumnInfo> columnMetadata = PhoenixUtil.getActualColumnInfoList(conn, tbl);
 
             columnCount = columnMetadata.size();
 
