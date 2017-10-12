@@ -130,7 +130,10 @@ public class PhoenixQueryBuilder {
 
     private String getSelectColumns(JobConf jobConf, String tableName, List<String>
             readColumnList) throws IOException {
-        String selectColumns = Joiner.on(PhoenixStorageHandlerConstants.COMMA).join(readColumnList);
+        String selectColumns = Joiner.on(PhoenixStorageHandlerConstants.COMMA).join(
+                /* fixed: skip empty column at top */
+                !readColumnList.isEmpty()
+                && readColumnList.get(0).isEmpty() ? readColumnList.subList(1, readColumnList.size()) :readColumnList);
 
         if (PhoenixStorageHandlerConstants.EMPTY_STRING.equals(selectColumns)) {
             selectColumns = "*";
