@@ -81,7 +81,7 @@ public class PhoenixConsumerIT extends BaseHBaseManagedTimeIT {
         brokerProps.setProperty("log.dirs",
             Files.createTempDirectory("kafka-").toAbsolutePath().toString());
         brokerProps.setProperty("listeners", "PLAINTEXT://" + BROKERHOST + ":" + BROKERPORT);
-        KafkaConfig config = new KafkaConfig(brokerProps);
+        KafkaConfig config = KafkaConfig.fromProps(brokerProps);
         Time mock = new MockTime();
         kafkaServer = TestUtils.createServer(config, mock);
         kafkaServer.startup();

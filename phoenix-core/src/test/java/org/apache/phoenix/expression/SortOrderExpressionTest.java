@@ -67,6 +67,7 @@ import org.apache.phoenix.util.DateUtil;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
+import java.util.Locale;
 
 /**
  * @since 1.2
@@ -146,6 +147,8 @@ public class SortOrderExpressionTest {
     @Test
     public void toChar() throws Exception {
         List<Expression> args = Lists.newArrayList(getInvertedLiteral(date(12, 11, 2001), PDate.INSTANCE));
+        // FIXME: changed default locale 
+        Locale.setDefault(Locale.US);
         evaluateAndAssertResult(new ToCharFunction(args, FunctionArgumentType.TEMPORAL, "", DateUtil.getDateFormatter("MM/dd/yy hh:mm a")), "12/11/01 12:00 AM");
     }
     

@@ -41,7 +41,9 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -125,6 +127,68 @@ public class PhoenixUtil {
 
     public static void dropTable(Connection conn, String tableName) throws SQLException {
         conn.createStatement().execute("drop table " + tableName);
+    }
+    
+    public static List<ColumnInfo> getActualColumnInfoList(Connection conn, Configuration config) throws
+            SQLException {
+        String tableName = config.get(PhoenixStorageHandlerConstants.PHOENIX_TABLE_NAME);
+        String mapping = config.get(PhoenixStorageHandlerConstants.PHOENIX_COLUMN_MAPPING);
+        return getActualColumnInfoList(conn, tableName, mapping);
+    }
+    
+    public static List<ColumnInfo> getActualColumnInfoList(Connection conn, Properties props) throws
+            SQLException {
+        String tableName = props.getProperty(PhoenixStorageHandlerConstants.PHOENIX_TABLE_NAME);
+        String mapping =  props.getProperty(PhoenixStorageHandlerConstants.PHOENIX_COLUMN_MAPPING);
+        return getActualColumnInfoList(conn, tableName, mapping);
+    }
+    
+    public static List<ColumnInfo> getActualColumnInfoList(Connection conn, String tableName, String mapping) throws
+            SQLException {
+        List<String> columnNames = getIncludeColumnsFromMapping(mapping);
+        List<ColumnInfo> fullColumnInfos = PhoenixUtil.getColumnInfoList(conn, tableName);
+        if (columnNames.isEmpty()) {
+           return fullColumnInfos;
+        } 
+        Map<String, ColumnInfo> columnInfoMap = new HashMap<>();
+        for (ColumnInfo columnInfo : fullColumnInfos) {
+            columnInfoMap.put(columnInfo.getDisplayName().toUpperCase(), columnInfo);
+        }
+        List<ColumnInfo> actualColumnInfos = new ArrayList<>(fullColumnInfos.size());
+        for (String columnName : columnNames) {
+            ColumnInfo info = columnInfoMap.get(columnName);
+            if (info == null) {
+                throw new SQLException("Not found column in phoenix table '" + tableName + "': " + columnName);
+            }
+            actualColumnInfos.add(info);
+        }
+        return actualColumnInfos;
+    }
+    
+    private static List<String> getIncludeColumnsFromMapping(String columnMappings) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Column mappings : " + columnMappings);
+        }
+
+        if (columnMappings == null) {
+            if (LOG.isInfoEnabled()) {
+                LOG.info("phoenix.column.mapping not set. using field definition");
+            }
+            return Collections.emptyList();
+        }
+
+        List<String> columns = new ArrayList<>();
+        for (String mapping : Splitter.on(PhoenixStorageHandlerConstants.COMMA)
+                .trimResults()
+                .split(columnMappings)) {
+            int splitIndex = mapping.indexOf(PhoenixStorageHandlerConstants.COLON);
+            if (splitIndex < 0) {
+                columns.add(mapping);
+                continue;
+            }
+            columns.add(mapping.substring(splitIndex + 1).trim().toUpperCase());
+        }
+        return columns;
     }
 
     public static List<ColumnInfo> getColumnInfoList(Connection conn, String tableName) throws

@@ -114,7 +114,7 @@ public class PhoenixRecordUpdater implements RecordUpdater {
             }
 
             String upsertQuery = QueryUtil.constructUpsertStatement(tableName, PhoenixUtil
-                    .getColumnInfoList(conn, tableName));
+                    .getActualColumnInfoList(conn, config));
 
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Upsert-query : " + upsertQuery);

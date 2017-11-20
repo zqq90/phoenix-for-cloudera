@@ -68,8 +68,7 @@ public class PhoenixSerializer {
             config.set(PhoenixStorageHandlerConstants.PHOENIX_COLUMN_MAPPING, mapping);
         }
         try (Connection conn = PhoenixConnectionUtil.getInputConnection(config, tbl)) {
-            List<ColumnInfo> columnMetadata = PhoenixUtil.getColumnInfoList(conn, tbl.getProperty
-                    (PhoenixStorageHandlerConstants.PHOENIX_TABLE_NAME));
+            List<ColumnInfo> columnMetadata = PhoenixUtil.getActualColumnInfoList(conn, tbl);
 
             columnCount = columnMetadata.size();
 

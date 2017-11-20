@@ -17,6 +17,7 @@
  */
 package org.apache.phoenix.hive.mapreduce;
 
+import com.google.common.base.Splitter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
@@ -147,8 +148,7 @@ public class PhoenixRecordWriter<T extends DBWritable> implements RecordWriter<N
         }
 
         String upsertQuery = QueryUtil.constructUpsertStatement(tableName, PhoenixUtil
-                .getColumnInfoList(conn, tableName));
-
+                .getActualColumnInfoList(conn, config));
         if (LOG.isDebugEnabled()) {
             LOG.debug("Upsert-query : " + upsertQuery);
         }

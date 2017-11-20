@@ -98,7 +98,8 @@ public class PhoenixInputFormat<T extends DBWritable> implements InputFormat<Wri
                     executionEngine);
         }
 
-        if (PhoenixStorageHandlerConstants.MR.equals(executionEngine)) {
+        if (PhoenixStorageHandlerConstants.MR.equals(executionEngine)
+                || PhoenixStorageHandlerConstants.SPARK.equals(executionEngine)) {
             List<IndexSearchCondition> conditionList = null;
             String filterExprSerialized = jobConf.get(TableScanDesc.FILTER_EXPR_CONF_STR);
             if (filterExprSerialized != null) {
